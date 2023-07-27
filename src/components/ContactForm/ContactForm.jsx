@@ -1,30 +1,26 @@
-import { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css'
 
 
-export class ContactForm extends Component {
+export function ContactForm({handleSubmit}) {
+    const [name, setName] = useState("")
+    const [number, setNumber] = useState("")
 
-  state = {
-    name: "",
-    number: ""
-  }
-
-
-  handleFormSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
     
-    this.props.handleSubmit(this.state);
+    handleSubmit(name, number);
 
-    this.setState({name: "", number: ""});
+      setName("");
+      setNumber("")
     
   }
 
-  render() {
-    const {name, number} = this.state
-    return (
+
+return (
          <div>
-           <form className={styles.contactForm} onSubmit={this.handleFormSubmit}>
+           <form className={styles.contactForm} onSubmit={handleFormSubmit}>
               <p>Name</p>
               <input
                 className={styles.nameInput}
@@ -34,7 +30,7 @@ export class ContactForm extends Component {
                 pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                 required
-                onChange={(event) => this.setState({name: event.target.value})}
+                onChange={(event) => setName(event.target.value)}
               />
               <p>Number</p>
               <input
@@ -45,16 +41,16 @@ export class ContactForm extends Component {
                 pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 required
-                onChange={(event) => this.setState({number: event.target.value})}              
+                onChange={(event) => setNumber(event.target.value)}              
               />
-              <button className={styles.submitBtn}>Add contact</button>
+              <button className={styles.submitBtn} type='submit'>Add contact</button>
   
            </form>
           </div>
       );
-  }
 }
 
+
 ContactForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+    handleSubmit: PropTypes.func.isRequired
 }
